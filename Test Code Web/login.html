@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập - Abublo Marketplace</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+            font-family: 'Inter', sans-serif; 
+        }
+
+        body { 
+            background-color: #0b0b14; 
+            color: #f1f5f9; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            background-image: radial-gradient(circle at 50% 0%, #2e1065 0%, #0b0b14 70%);
+        }
+
+        .auth-card { 
+            background: rgba(18, 16, 33, 0.85); 
+            backdrop-filter: blur(12px);
+            padding: 40px; 
+            border-radius: 24px; 
+            border: 1px solid rgba(139, 92, 246, 0.25); 
+            width: 450px; 
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 20px rgba(139, 92, 246, 0.15); 
+            text-align: center; 
+        }
+
+        .title { 
+            font-size: 26px; 
+            font-weight: 800; 
+            margin-bottom: 8px; 
+            background: linear-gradient(135deg, #ffffff 0%, #c084fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle { 
+            font-size: 14px; 
+            color: #94a3b8; 
+            margin-bottom: 24px; 
+        }
+
+        .form-group { 
+            text-align: left; 
+            margin-bottom: 18px; 
+        }
+
+        .form-group label { 
+            display: block; 
+            font-size: 14px; 
+            font-weight: 600; 
+            margin-bottom: 8px; 
+            color: #cbd5e1; 
+        }
+
+        .form-group input { 
+            width: 100%; 
+            padding: 12px 16px; 
+            border-radius: 12px; 
+            border: 1px solid rgba(139, 92, 246, 0.3); 
+            background: #161426;
+            color: #ffffff;
+            font-size: 15px; 
+            outline: none; 
+            transition: all 0.2s ease;
+        }
+
+        .form-group input:focus {
+            border-color: #a855f7;
+            box-shadow: 0 0 12px rgba(168, 85, 247, 0.4);
+            background: #1c1936;
+        }
+
+        .btn-submit { 
+            width: 100%; 
+            padding: 14px; 
+            border-radius: 12px; 
+            font-weight: 700; 
+            font-size: 15px; 
+            cursor: pointer; 
+            border: none; 
+            background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%); 
+            color: #ffffff; 
+            margin-bottom: 15px; 
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
+            transition: all 0.2s ease;
+        }
+
+        .btn-submit:hover { 
+            background: linear-gradient(135deg, #9333ea 0%, #7e22ce 100%); 
+            box-shadow: 0 6px 20px rgba(147, 51, 234, 0.6);
+            transform: translateY(-1px);
+        }
+
+        .switch-link { 
+            display: inline-block; 
+            color: #c084fc; 
+            text-decoration: none; 
+            font-size: 14px; 
+            font-weight: 600; 
+            transition: color 0.2s;
+        }
+
+        .switch-link:hover { 
+            color: #e9d5ff;
+            text-decoration: underline; 
+        }
+    </style>
+</head>
+<body>
+
+    <div class="auth-card">
+        <h1 class="title">Chào mừng trở lại.</h1>
+        <p class="subtitle">Đăng nhập để quản lý số dư, theo dõi đơn và nhận thông báo từ cửa hàng.</p>
+        
+        <div class="form-group">
+            <label for="loginUsername">Username</label>
+            <input type="text" id="loginUsername" placeholder="Nhập tên tài khoản...">
+        </div>
+
+        <div class="form-group">
+            <label for="loginPassword">Mật khẩu</label>
+            <input type="password" id="loginPassword" placeholder="Nhập mật khẩu...">
+        </div>
+
+        <button class="btn-submit" onclick="handleLogin()">Đăng nhập</button>
+        <p style="font-size: 14px; color: #94a3b8;">Chưa có tài khoản? <a href="register.html" class="switch-link">Đăng ký ngay</a></p>
+    </div>
+
+    <script>
+        function handleLogin() {
+            const usernameInput = document.getElementById('loginUsername').value.trim();
+            const passwordInput = document.getElementById('loginPassword').value.trim();
+
+            if (!usernameInput || !passwordInput) {
+                alert('Vui lòng nhập đầy đủ Username và Mật khẩu!');
+                return;
+            }
+
+            // Lấy danh sách toàn bộ tài khoản đã đăng ký trong máy ra
+            let userList = JSON.parse(localStorage.getItem('registered_users')) || [];
+
+            // Tìm xem có tài khoản nào trùng cả Username và Mật khẩu không
+            const matchedUser = userList.find(user => 
+                user.username.toLowerCase() === usernameInput.toLowerCase() && 
+                user.password === passwordInput
+            );
+
+            if (matchedUser) {
+                // Đăng nhập đúng: Lưu trạng thái phiên làm việc hiện tại lên hệ thống
+                localStorage.setItem('user_username', matchedUser.username);
+                localStorage.setItem('user_balance', matchedUser.balance.toString());
+
+                alert('Đăng nhập thành công!');
+                window.location.href = 'shop.html'; // Quay lại cửa hàng
+            } else {
+                // Sai tài khoản hoặc mật khẩu
+                alert('Tên tài khoản hoặc mật khẩu không chính xác!');
+            }
+        }
+    </script>
+</body>
+</html>

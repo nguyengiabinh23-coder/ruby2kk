@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop Game Giá Rẻ - Mua Bán & Dịch Vụ Tự Động</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background-color: #0b0f19; color: #f3f4f6; min-height: 100vh; padding-bottom: 60px; position: relative; }
+
+        .hidden { display: none !important; }
+
+        /* Top Bar Announcement */
+        .top-bar { background: linear-gradient(90deg, #1e1b4b, #311b92); text-align: center; padding: 8px 15px; font-size: 13px; font-weight: 600; color: #e0e7ff; border-bottom: 1px solid rgba(255,255,255,0.08); }
+        .top-bar a { color: #38bdf8; text-decoration: underline; font-weight: 700; margin-left: 5px; }
+
+        /* Header Navigation */
+        .navbar { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(12px); border-bottom: 1px solid #1e293b; padding: 14px 6%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+        .nav-left { display: flex; align-items: center; gap: 30px; }
+        .logo { font-size: 18px; font-weight: 800; color: #fff; text-decoration: none; display: flex; align-items: center; gap: 10px; cursor: pointer; }
+        
+        .nav-links { display: flex; gap: 20px; list-style: none; }
+        .nav-links a { color: #94a3b8; text-decoration: none; font-size: 13px; font-weight: 600; transition: 0.2s; display: flex; align-items: center; gap: 6px; }
+        .nav-links a:hover { color: #38bdf8; }
+
+        .nav-right { display: flex; align-items: center; gap: 10px; }
+        .btn-top { padding: 8px 16px; border-radius: 8px; font-weight: 700; font-size: 13px; text-decoration: none; cursor: pointer; border: none; transition: 0.2s; display: inline-flex; align-items: center; gap: 6px; }
+        .btn-nap { background: #6366f1; color: white; box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3); }
+        .btn-nap:hover { background: #4f46e5; }
+        .btn-login { background: #1e293b; color: #cbd5e1; border: 1px solid #334155; }
+        .btn-login:hover { background: #334155; color: #fff; }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+        /* Hero Section */
+        .hero { text-align: center; padding: 40px 20px 25px; }
+        .badge-pill { display: inline-block; background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.3); color: #818cf8; padding: 4px 14px; border-radius: 99px; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 15px; }
+        .hero h1 { font-size: 36px; font-weight: 900; line-height: 1.2; margin-bottom: 12px; }
+        .gradient-text { background: linear-gradient(135deg, #a7f3d0 0%, #38bdf8 50%, #f472b6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero p { color: #94a3b8; font-size: 14px; max-width: 600px; margin: 0 auto 20px; line-height: 1.6; }
+
+        /* Feature Cards Grid */
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 15px; margin-bottom: 30px; }
+        .feature-card { background: #0f172a; border: 1px solid #1e293b; border-radius: 14px; padding: 18px 20px; display: flex; justify-content: space-between; align-items: center; }
+        .feature-info .title { font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; margin-bottom: 4px; }
+        .feature-info .value { font-size: 20px; font-weight: 800; color: #38bdf8; }
+        .feature-icon { font-size: 24px; color: #334155; }
+
+        /* Product Section */
+        .section-header { font-size: 18px; font-weight: 800; color: #fff; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+        .section-header i { color: #38bdf8; }
+
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; margin-bottom: 40px; }
+        
+        /* Category Card */
+        .product-card { background: #0f172a; border: 1px solid #1e293b; border-radius: 14px; overflow: hidden; transition: 0.2s; cursor: pointer; }
+        .product-card:hover { border-color: #6366f1; transform: translateY(-4px); }
+        .product-img { width: 100%; height: 160px; object-fit: cover; background: #1e293b; }
+        .product-body { padding: 15px; }
+        .product-title { font-size: 15px; font-weight: 700; color: #f1f5f9; line-height: 1.4; }
+        .product-subtitle { font-size: 13px; color: #cbd5e1; margin-top: 6px; line-height: 1.5; font-weight: 500; }
+        .product-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; }
+        .product-price { font-size: 16px; font-weight: 800; color: #4ade80; }
+        .btn-buy { background: #22c55e; color: #022c22; font-weight: 800; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; transition: 0.2s; font-size: 13px; }
+
+        /* Steal An Egg UI Style */
+        .steal-egg-card {
+            background: #111827;
+            border: 1px solid #1f2937;
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.2s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        }
+        .steal-egg-card:hover {
+            border-color: #6366f1;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.25);
+        }
+        .steal-egg-img-wrap {
+            position: relative;
+            width: 100%;
+            height: 150px;
+            overflow: hidden;
+        }
+        .steal-egg-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .steal-egg-badge-top {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+            color: #facc15;
+            font-size: 11px;
+            font-weight: 800;
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
+        .steal-egg-body {
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+        .steal-egg-subhead {
+            font-size: 10px;
+            font-weight: 700;
+            color: #6b7280;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+        .steal-egg-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: #4c1d95;
+            color: #c084fc;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 6px;
+            width: fit-content;
+            margin-bottom: 6px;
+        }
+        .steal-egg-title {
+            font-size: 18px;
+            font-weight: 900;
+            color: #ffffff;
+            margin-bottom: 8px;
+        }
+        .steal-egg-price {
+            font-size: 20px;
+            font-weight: 900;
+            color: #f59e0b;
+            margin-bottom: 12px;
+        }
+        .steal-egg-desc {
+            font-size: 12px;
+            color: #9ca3af;
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+        .steal-egg-features {
+            list-style: none;
+            margin-bottom: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            flex-grow: 1;
+        }
+        .steal-egg-features li {
+            font-size: 12px;
+            color: #9ca3af;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .steal-egg-features li i {
+            color: #10b981;
+            font-size: 12px;
+        }
+
+        .btn-steal-buy {
+            width: 100%;
+            background: #0072ff;
+            border: none;
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 14px;
+            padding: 11px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 114, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .btn-steal-buy:hover {
+            background: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(0, 114, 255, 0.5);
+        }
+
+        /* Back Button */
+        .back-btn { background: #1e293b; border: 1px solid #334155; color: #38bdf8; padding: 10px 18px; border-radius: 8px; font-weight: 700; cursor: pointer; margin-bottom: 20px; display: inline-flex; align-items: center; gap: 8px; transition: 0.2s; }
+        .back-btn:hover { background: #334155; color: #fff; }
+
+        /* ===== TRANG ĐIỀN THÔNG TIN ĐẶT HÀNG (CHECKOUT VIEW) ===== */
+        .order-header-title { font-size: 28px; font-weight: 900; color: #fff; margin-bottom: 4px; }
+        .order-header-subtitle { font-size: 13px; color: #94a3b8; margin-bottom: 25px; }
+
+        .checkout-layout { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; }
+        @media (max-width: 850px) { .checkout-layout { grid-template-columns: 1fr; } }
+
+        .checkout-box { background: #0f172a; border: 1px solid #1e293b; border-radius: 16px; padding: 24px; }
+        .box-head-title { font-size: 15px; font-weight: 800; color: #fff; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #1e293b; padding-bottom: 12px; }
+        
+        .selected-package-badge { background: #182238; border: 1px solid #233252; border-radius: 12px; padding: 14px 18px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+        .pkg-name-text { font-weight: 800; font-size: 14px; color: #38bdf8; text-transform: uppercase; }
+        .pkg-price-text { font-size: 20px; font-weight: 900; color: #f59e0b; }
+
+        .form-group { margin-bottom: 18px; }
+        .form-label { display: block; font-size: 12px; font-weight: 800; color: #cbd5e1; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.5px; }
+        .form-input { width: 100%; background: #090d16; border: 1px solid #1e293b; border-radius: 10px; padding: 12px 16px; color: #fff; font-size: 14px; transition: 0.2s; outline: none; }
+        .form-input:focus { border-color: #6366f1; box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15); }
+
+        .contact-notice-box { background: rgba(245, 158, 11, 0.05); border: 1px dashed rgba(245, 158, 11, 0.3); border-radius: 12px; padding: 14px; margin: 20px 0; font-size: 12px; color: #fbbf24; line-height: 1.6; }
+        .contact-methods { display: flex; gap: 15px; margin-top: 10px; flex-wrap: wrap; }
+        .contact-item { font-size: 12px; color: #cbd5e1; display: flex; align-items: center; gap: 6px; }
+
+        .btn-confirm-order { width: 100%; background: #4f46e5; color: #fff; font-weight: 800; font-size: 15px; padding: 14px; border-radius: 12px; border: none; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 15px rgba(79, 70, 229, 0.4); margin-top: 10px; }
+        .btn-confirm-order:hover { background: #4338ca; transform: translateY(-2px); }
+
+        /* Cột bên phải Order */
+        .warning-card { background: #0f172a; border: 1px solid #1e293b; border-radius: 16px; padding: 20px; margin-bottom: 20px; }
+        .warning-title { color: #f59e0b; font-weight: 800; font-size: 14px; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+        .warning-desc { font-size: 12px; color: #94a3b8; line-height: 1.6; }
+
+        .balance-card { background: #0f172a; border: 1px solid #1e293b; border-radius: 16px; padding: 20px; }
+        .balance-title { color: #fff; font-weight: 800; font-size: 14px; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+        .balance-value { font-size: 26px; font-weight: 900; color: #4ade80; margin-bottom: 15px; }
+        .btn-add-funds { width: 100%; background: #1e293b; color: #38bdf8; border: 1px solid #334155; font-weight: 700; padding: 10px; border-radius: 8px; cursor: pointer; text-decoration: none; display: block; text-align: center; font-size: 13px; transition: 0.2s; }
+        .btn-add-funds:hover { background: #334155; color: #fff; }
+
+        /* History Grid */
+        .history-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; margin-top: 40px; margin-bottom: 40px; }
+        .history-box { background: #0f172a; border: 1px solid #1e293b; border-radius: 14px; padding: 20px; }
+        .history-title { font-size: 16px; font-weight: 800; color: #fff; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
+        .history-title i { color: #38bdf8; }
+        .history-list { display: flex; flex-direction: column; gap: 10px; max-height: 280px; overflow-y: auto; }
+        .history-item { background: #182238; border-radius: 10px; padding: 10px 14px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; }
+        .history-user { font-weight: 700; color: #818cf8; }
+        .history-action { color: #cbd5e1; margin-left: 4px; }
+        .history-time { font-size: 11px; color: #64748b; margin-top: 3px; }
+        .amount-green { color: #4ade80; font-weight: 800; }
+        .amount-purple { color: #c084fc; font-weight: 800; }
+
+        /* Giao diện Admin Modal / Panel */
+        .admin-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 13px; }
+        .admin-table th, .admin-table td { border: 1px solid #1e293b; padding: 10px; text-align: left; }
+        .admin-table th { background: #182238; color: #38bdf8; }
+        .acc-info-box { background: #090d16; border: 1px solid #334155; padding: 6px 10px; border-radius: 6px; font-family: monospace; font-size: 12px; color: #facc15; }
+
+        footer { text-align: center; border-top: 1px solid #1e293b; padding-top: 25px; margin-top: 50px; }
+        .footer-brand { font-family: monospace; font-size: 12px; color: #64748b; letter-spacing: 1px; }
+        .footer-copy { font-size: 11px; color: #475569; margin-top: 4px; }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        Ưu đãi giảm giá cực sốc lên tới 50% cho toàn bộ Vật phẩm & Dịch vụ Game! Giao dịch tự động 24/7! <a href="#store">MUA NGAY</a>
+    </div>
+
+    <nav class="navbar">
+        <div class="nav-left">
+            <div class="logo" onclick="goHome()">
+                <i class="fa-solid fa-gamepad" style="color: #6366f1; font-size: 22px;"></i>
+                <span>SHOP GAME</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#" onclick="goHome()"><i class="fa-regular fa-newspaper"></i> Trang Chủ</a></li>
+                <li><a href="#"><i class="fa-regular fa-circle-question"></i> FAQ</a></li>
+                <li><a href="#"><i class="fa-headset"></i> Liên Hệ</a></li>
+            </ul>
+        </div>
+        <div class="nav-right">
+            <a href="deposit.html" class="btn-top btn-nap"><i class="fa-solid fa-bolt"></i> Nạp Tiền</a>
+            <span id="userBalanceDisplay" style="font-weight: 700; color: #4ade80; font-size: 13px; margin: 0 5px;">0 đ</span>
+            <button onclick="openAdminPanel()" id="adminBtn" class="btn-top btn-login" style="display: none; background: #ec4899; color: white;">Admin</button>
+        </div>
+    </nav>
+
+    <div class="container">
+
+        <!-- ===== 1. TRANG CHỦ DANH MỤC ===== -->
+        <div id="home-view">
+            <section class="hero">
+                <div class="badge-pill">SHOP GAME GIÁ RẺ</div>
+                <h1>Mua Bán & Nạp Tiền<br><span class="gradient-text">Game Siêu Nhanh</span></h1>
+                <p>Nạp tiền tự động qua ngân hàng, MoMo, TheSieuRe và thẻ cào. Xử lý nhanh, an toàn 24/7.</p>
+            </section>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-info">
+                        <div class="title">NGÂN HÀNG HỖ TRỢ</div>
+                        <div class="value">9+</div>
+                    </div>
+                    <i class="fa-solid fa-building-columns feature-icon"></i>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-info">
+                        <div class="title">TỐC ĐỘ XỬ LÝ</div>
+                        <div class="value">&lt; 30s</div>
+                    </div>
+                    <i class="fa-solid fa-bolt feature-icon"></i>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-info">
+                        <div class="title">BẢO MẬT</div>
+                        <div class="value">100%</div>
+                    </div>
+                    <i class="fa-solid fa-shield-halved feature-icon"></i>
+                </div>
+            </div>
+
+            <div class="section-header" id="store"><i class="fa-solid fa-store"></i> DANH MỤC VẬT PHẨM NỔI BẬT</div>
+            <div class="product-grid" id="productGrid"></div>
+        </div>
+
+        <!-- ===== 2. TRANG DANH SÁCH GÓI DỊCH VỤ ===== -->
+        <div id="category-detail-view" class="hidden" style="margin-top: 30px;">
+            <button class="back-btn" onclick="goHome()"><i class="fa-solid fa-arrow-left"></i> Quay lại trang chủ</button>
+            <div class="section-header" style="font-size: 24px; color: #38bdf8;" id="categoryDetailTitle">
+                <i class="fa-solid fa-box-open"></i> CHI TIẾT DỊCH VỤ
+            </div>
+            <p style="color: #94a3b8; font-size: 13px; margin-bottom: 25px;" id="categoryDetailDesc">Vui lòng chọn gói dịch vụ bạn muốn mua bên dưới:</p>
+
+            <div class="product-grid" id="categoryPackagesGrid"></div>
+        </div>
+
+        <!-- ===== 3. TRANG ĐIỀN THÔNG TIN ĐẶT DỊCH VỤ ===== -->
+        <div id="checkout-view" class="hidden" style="margin-top: 30px;">
+            <button class="back-btn" onclick="goBackToPackages()"><i class="fa-solid fa-arrow-left"></i> Quay lại chọn gói</button>
+            
+            <h1 class="order-header-title">Cày thuê</h1>
+            <p class="order-header-subtitle">Tiền đã trừ thẳng vào tài khoản của bạn sau khi bạn đặt dịch vụ nhanh và siêu tốc.</p>
+
+            <div class="checkout-layout">
+                <!-- Cột trái: Form nhập -->
+                <div class="checkout-box">
+                    <div class="box-head-title"><i class="fa-solid fa-file-pen" style="color: #38bdf8;"></i> Thông Tin Đặt Đơn</div>
+                    
+                    <div class="selected-package-badge">
+                        <span class="pkg-name-text" id="checkoutPackageName">GÓI TREO 24H</span>
+                        <span class="pkg-price-text" id="checkoutPackagePrice">29.000đ</span>
+                    </div>
+
+                    <form id="orderSubmitForm" onsubmit="handleFinalSubmit(event)">
+                        <div class="form-group">
+                            <label class="form-label">Tài khoản GAME *</label>
+                            <input type="text" id="inputGameUser" class="form-input" placeholder="Username/Email/Đăng nhập game" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Mật khẩu ĐĂNG NHẬP *</label>
+                            <input type="password" id="inputGamePass" class="form-input" placeholder="Mật khẩu..." required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Mã 2FA (Nếu có)</label>
+                            <input type="text" id="input2FA" class="form-input" placeholder="Mã khôi phục 2FA...">
+                        </div>
+
+                        <div class="contact-notice-box">
+                            📌 Nếu bạn gặp vấn đề sau khi đặt đơn, vui lòng liên hệ trực tiếp cho Admin qua Zalo hoặc Fanpage để được hỗ trợ giải quyết nhanh nhất!
+                            <div class="contact-methods">
+                                <span class="contact-item"><i class="fa-solid fa-phone" style="color:#10b981;"></i> 0949.739.501 (Admin Zalo)</span>
+                                <span class="contact-item"><i class="fa-brands fa-facebook" style="color:#3b82f6;"></i> fb.com/ainhbao</span>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-confirm-order">
+                            <i class="fa-solid fa-circle-check"></i> Xác nhận đặt dịch vụ
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Cột phải: Lưu ý & Số dư -->
+                <div>
+                    <div class="warning-card">
+                        <div class="warning-title"><i class="fa-solid fa-triangle-exclamation"></i> Lưu ý</div>
+                        <div class="warning-desc">
+                            Vui lòng tắt xác minh 2 bước để nhân viên cày game hỗ trợ xử lý đơn nhanh nhất cho bạn.
+                        </div>
+                    </div>
+
+                    <div class="balance-card">
+                        <div class="balance-title"><i class="fa-solid fa-wallet" style="color:#4ade80;"></i> Số Dư Của Bạn</div>
+                        <div class="balance-value" id="checkoutUserBalance">0 đ</div>
+                        <a href="deposit.html" class="btn-add-funds"><i class="fa-solid fa-plus"></i> Nạp thêm tiền</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== 4. TRANG BẢNG QUẢN LÝ ADMIN ===== -->
+        <div id="admin-view" class="hidden" style="margin-top: 30px;">
+            <button class="back-btn" onclick="goHome()"><i class="fa-solid fa-arrow-left"></i> Quay lại trang chủ</button>
+            <div class="section-header" style="font-size: 24px; color: #ec4899;">
+                <i class="fa-solid fa-user-shield"></i> TRANG QUẢN LÝ ADMIN - ĐƠN HÀNG CÀY THUÊ
+            </div>
+
+            <div style="background: #0f172a; border: 1px solid #1e293b; border-radius: 16px; padding: 20px; overflow-x: auto;">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Mã Đơn</th>
+                            <th>Khách Hàng</th>
+                            <th>Tên Gói</th>
+                            <th>Giá Tiền</th>
+                            <th>Tài Khoản & Mật Khẩu Game</th>
+                            <th>Trạng Thái</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminOrderTableBody">
+                        <!-- Danh sách đơn sẽ hiển thị ở đây -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ===== LỊCH SỬ MUA HÀNG ===== -->
+        <div class="history-grid">
+            <div class="history-box">
+                <div class="history-title"><i class="fa-solid fa-money-bill-transfer"></i> Lịch Sử Nạp Tiền</div>
+                <div class="history-list">
+                    <div class="history-item">
+                        <div>
+                            <div><span class="history-user">Hs***</span><span class="history-action">nạp thành công</span></div>
+                            <div class="history-time">4 phút trước</div>
+                        </div>
+                        <div class="amount-green">+50,000đ</div>
+                    </div>
+                    <div class="history-item">
+                        <div>
+                            <div><span class="history-user">Ch***</span><span class="history-action">nạp thành công</span></div>
+                            <div class="history-time">11 phút trước</div>
+                        </div>
+                        <div class="amount-green">+19,000đ</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="history-box">
+                <div class="history-title"><i class="fa-solid fa-rotate-left"></i> Mua Hàng Gần Đây</div>
+                <div class="history-list" id="purchaseHistoryList"></div>
+            </div>
+        </div>
+
+        <footer>
+            <div class="footer-brand">+ SHOP ANH BOSS GAMING v3.0 +</div>
+            <div class="footer-copy">2026 © All rights reserved.</div>
+        </footer>
+    </div>
+
+    <script>
+        const STEAL_EGG_IMAGE = 'https://i.ibb.co/PvHNjhcZ/7-BABD44-B-B0-FC-4317-BA9-F-B0-F63-B4568-B7-1.webp';
+        const DICH_VU_STEAL_EGG_IMAGE = 'https://i.ibb.co/wZP91nT4/10-E9-F549-5431-46-B2-A417-99-F3-AABDAD78.webp';
+        const CAY_THUE_BLOXFRUIT_IMAGE = 'https://i.ibb.co/NdpGhy2J/D8-ABE326-C2-F3-40-EB-8-BAD-FD573-D4-CB5-C8.webp';
+        const BAN_ACC_BLOXFRUIT_IMAGE = 'https://i.ibb.co/DPzgZhRM/3874-B866-E1-B0-4-E6-A-857-C-27-D07624-C9-CA.webp';
+
+        const mainCategories = [
+            { id: 'CAT_STEAL_EGG', name: 'Dịch Vụ Treo Steal An Egg', subtitle: 'Dịch Vụ Cày Game Roblox Giá Rẻ - Siêu Tốc, An Toàn, Hỗ Trợ Tất Cả Tựa Game Hot Hiện Nay!', img: STEAL_EGG_IMAGE },
+            { id: 'P02', name: 'Dịch Vụ Trái Kitsune Vĩnh Viễn', subtitle: 'Gói dịch vụ cao cấp - Hỗ trợ nạp và nhận item siêu tốc!', img: DICH_VU_STEAL_EGG_IMAGE },
+            { id: 'P03', name: 'Dịch Vụ Trái Dragon Vĩnh Viễn', subtitle: 'Gói dịch vụ cao cấp - Hỗ trợ nạp và nhận item siêu tốc!', img: CAY_THUE_BLOXFRUIT_IMAGE },
+            { id: 'P04', name: 'Dịch Vụ Cày Max Level 2550', subtitle: 'Gói cày cấp tốc an toàn 100% - Bảo hành tài khoản!', img: BAN_ACC_BLOXFRUIT_IMAGE }
+        ];
+
+        const categoryPackagesData = {
+            'CAT_STEAL_EGG': [
+                { id: 'SE01', name: 'GÓI TREO 6H', price: 20000, img: 'https://i.ibb.co/HfZXwVx5/image.png' },
+                { id: 'SE02', name: 'GÓI TREO 12H', price: 30000, img: 'https://i.ibb.co/fdXx0yHV/image.png' },
+                { id: 'SE03', name: 'GÓI TREO 20H', price: 40000, img: 'https://i.ibb.co/HDMhnZYD/image.png' },
+                { id: 'SE04', name: 'GÓI TREO 24H', price: 50000, img: 'https://i.ibb.co/CTGWq0S/image.png' },
+                { id: 'SE05', name: 'GÓI TREO 36H', price: 60000, img: 'https://i.ibb.co/Q3q7NZFS/image.png' },
+                { id: 'SE06', name: 'GÓI TREO 48H', price: 70000, img: 'https://i.ibb.co/r2n8dGSD/image.png' },
+                { id: 'SE07', name: 'GÓI TREO 1 TUẦN', price: 250000, img: 'https://i.ibb.co/PvTpzxV4/image.png' }
+            ],
+            'P02': [
+                { id: 'KIT01', name: 'Gói Kitsune Physical', price: 150000, img: DICH_VU_STEAL_EGG_IMAGE },
+                { id: 'KIT02', name: 'Gói Kitsune Permanent', price: 450000, img: DICH_VU_STEAL_EGG_IMAGE }
+            ],
+            'P03': [
+                { id: 'DRG01', name: 'Gói Dragon Physical', price: 200000, img: CAY_THUE_BLOXFRUIT_IMAGE },
+                { id: 'DRG02', name: 'Gói Dragon Permanent', price: 600000, img: CAY_THUE_BLOXFRUIT_IMAGE }
+            ],
+            'P04': [
+                { id: 'LV01', name: 'Cày Level 1 - 1500', price: 50000, img: BAN_ACC_BLOXFRUIT_IMAGE },
+                { id: 'LV02', name: 'Cày Level 1500 - Max 2550', price: 90000, img: BAN_ACC_BLOXFRUIT_IMAGE }
+            ]
+        };
+
+        let currentActiveCatId = '';
+        let selectedPackageInfo = { name: '', price: 0 };
+
+        function maskUsername(name) {
+            if (!name) return 'kh***';
+            if (name.length <= 3) return name[0] + '***';
+            return name.substring(0, 2) + '***' + name.substring(name.length - 1);
+        }
+
+        function initShop() {
+            let username = localStorage.getItem('user_username') || 'nguyen gia binh';
+            localStorage.setItem('user_username', username);
+
+            // Mặc định cho phép hiển thị nút Admin
+            document.getElementById('adminBtn').style.display = 'inline-flex';
+
+            updateBalanceDisplay();
+            renderMainProducts();
+            renderRecentPurchases();
+        }
+
+        function updateBalanceDisplay() {
+            let balance = Number(localStorage.getItem('user_balance')) || 9999999752000;
+            localStorage.setItem('user_balance', balance.toString());
+            const formatted = balance.toLocaleString('vi-VN') + ' đ';
+            document.getElementById('userBalanceDisplay').innerText = formatted;
+            document.getElementById('checkoutUserBalance').innerText = formatted;
+        }
+
+        function renderMainProducts() {
+            const grid = document.getElementById('productGrid');
+            grid.innerHTML = mainCategories.map(p => `
+                <div class="product-card" onclick="openCategoryPage('${p.id}')">
+                    <img src="${p.img}" class="product-img" alt="${p.name}">
+                    <div class="product-body">
+                        <div class="product-title">${p.name}</div>
+                        <div class="product-subtitle">${p.subtitle}</div>
+                        <div class="product-footer" style="justify-content: flex-end;">
+                            <button class="btn-buy" style="background:#0284c7; color:#fff;">XEM GÓI</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function openCategoryPage(catId) {
+            currentActiveCatId = catId;
+            const category = mainCategories.find(item => item.id === catId);
+            const packages = categoryPackagesData[catId] || [];
+
+            if (!category) return;
+
+            document.getElementById('categoryDetailTitle').innerHTML = `<i class="fa-solid fa-box-open"></i> ${category.name.toUpperCase()}`;
+            document.getElementById('categoryDetailDesc').innerText = `Danh sách gói dịch vụ nằm trong "${category.name}". Chọn gói bạn muốn giao dịch:`;
+
+            const grid = document.getElementById('categoryPackagesGrid');
+            if (catId === 'CAT_STEAL_EGG') {
+                grid.innerHTML = packages.map(p => `
+                    <div class="steal-egg-card">
+                        <div class="steal-egg-img-wrap">
+                            <img src="${p.img}" alt="${p.name}">
+                            <div class="steal-egg-badge-top">MUA NGAY</div>
+                        </div>
+                        <div class="steal-egg-body">
+                            <div class="steal-egg-subhead">DỊCH VỤ TREO GAME STEAL AN EGG</div>
+                            <div class="steal-egg-tag"><i class="fa-solid fa-bolt"></i> Gói</div>
+                            <div class="steal-egg-title">${p.name}</div>
+                            <div class="steal-egg-price">${p.price.toLocaleString('vi-VN')}đ</div>
+                            <div class="steal-egg-desc">Gói Treo Full Tính Năng Speed - Pet - Event</div>
+                            <ul class="steal-egg-features">
+                                <li><i class="fa-solid fa-check"></i> CTV nhận đơn và xử lý</li>
+                                <li><i class="fa-solid fa-check"></i> Bạn cung cấp tài khoản game</li>
+                            </ul>
+                            <button class="btn-steal-buy" onclick="goToCheckout('${p.name}', ${p.price})"><i class="fa-solid fa-cart-shopping"></i> Đặt Dịch Vụ</button>
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                grid.innerHTML = packages.map(p => `
+                    <div class="product-card">
+                        <img src="${p.img}" class="product-img" alt="${p.name}">
+                        <div class="product-body">
+                            <div class="product-title">${p.name}</div>
+                            <div class="product-footer">
+                                <div class="product-price">${p.price.toLocaleString('vi-VN')} đ</div>
+                                <button class="btn-buy" onclick="goToCheckout('${p.name}', ${p.price})">MUA NGAY</button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            document.getElementById('home-view').classList.add('hidden');
+            document.getElementById('checkout-view').classList.add('hidden');
+            document.getElementById('admin-view').classList.add('hidden');
+            document.getElementById('category-detail-view').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        /* Chuyển Sang Trang Nhập Thông Tin Đặt Dịch Vụ */
+        function goToCheckout(pkgName, pkgPrice) {
+            selectedPackageInfo = { name: pkgName, price: pkgPrice };
+
+            document.getElementById('checkoutPackageName').innerText = pkgName;
+            document.getElementById('checkoutPackagePrice').innerText = pkgPrice.toLocaleString('vi-VN') + 'đ';
+
+            document.getElementById('category-detail-view').classList.add('hidden');
+            document.getElementById('home-view').classList.add('hidden');
+            document.getElementById('admin-view').classList.add('hidden');
+            document.getElementById('checkout-view').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function goBackToPackages() {
+            document.getElementById('checkout-view').classList.add('hidden');
+            document.getElementById('admin-view').classList.add('hidden');
+            document.getElementById('category-detail-view').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function goHome() {
+            document.getElementById('category-detail-view').classList.add('hidden');
+            document.getElementById('checkout-view').classList.add('hidden');
+            document.getElementById('admin-view').classList.add('hidden');
+            document.getElementById('home-view').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        /* Xử lý bấm "Xác nhận đặt dịch vụ" và Gửi Thông Tin Tài Khoản Về Admin */
+        function handleFinalSubmit(e) {
+            e.preventDefault();
+
+            let balance = Number(localStorage.getItem('user_balance')) || 0;
+            let username = localStorage.getItem('user_username') || 'Thành viên';
+
+            const gameUser = document.getElementById('inputGameUser').value.trim();
+            const gamePass = document.getElementById('inputGamePass').value.trim();
+            const game2FA = document.getElementById('input2FA').value.trim();
+
+            if (!gameUser || !gamePass) {
+                alert('⚠️ Vui lòng điền đầy đủ Tài khoản và Mật khẩu Game!');
+                return;
+            }
+
+            if (balance < selectedPackageInfo.price) {
+                alert('❌ Số dư ví không đủ! Vui lòng nạp thêm tiền để thanh toán đơn hàng này.');
+                return;
+            }
+
+            // Trừ tiền & Lưu thông tin chi tiết đơn hàng
+            balance -= selectedPackageInfo.price;
+            localStorage.setItem('user_balance', balance.toString());
+            updateBalanceDisplay();
+
+            const newOrder = {
+                id: 'ORD-' + Math.floor(100000 + Math.random() * 900000),
+                username: username,
+                item: selectedPackageInfo.name,
+                price: selectedPackageInfo.price,
+                gameAccount: gameUser,  // Lưu TK
+                gamePass: gamePass,      // Lưu MK
+                code2FA: game2FA || 'Không có', // Lưu 2FA
+                date: 'Vừa xong',
+                status: 'Đang xử lý'
+            };
+
+            let orders = JSON.parse(localStorage.getItem('app_orders')) || [];
+            orders.push(newOrder);
+            localStorage.setItem('app_orders', JSON.stringify(orders));
+
+            alert(`🎉 Đặt dịch vụ "${selectedPackageInfo.name}" thành công!\nHệ thống đã chuyển thông tin tài khoản game tới Admin để xử lý.`);
+            
+            // Reset form
+            document.getElementById('orderSubmitForm').reset();
+            renderRecentPurchases();
+            goHome();
+        }
+
+        /* Hiển thị trang quản lý Admin chứa Tài khoản/Mật khẩu đơn hàng */
+        function openAdminPanel() {
+            document.getElementById('home-view').classList.add('hidden');
+            document.getElementById('category-detail-view').classList.add('hidden');
+            document.getElementById('checkout-view').classList.add('hidden');
+            document.getElementById('admin-view').classList.remove('hidden');
+
+            const tbody = document.getElementById('adminOrderTableBody');
+            let orders = JSON.parse(localStorage.getItem('app_orders')) || [];
+
+            if (orders.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:#94a3b8;">Chưa có đơn hàng nào được đặt.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = orders.slice().reverse().map(ord => `
+                <tr>
+                    <td style="font-weight:700; color:#38bdf8;">${ord.id}</td>
+                    <td>${ord.username}</td>
+                    <td style="font-weight:700; color:#c084fc;">${ord.item}</td>
+                    <td style="color:#f59e0b; font-weight:800;">${Number(ord.price).toLocaleString('vi-VN')}đ</td>
+                    <td>
+                        <div class="acc-info-box">
+                            <div><strong>TK:</strong> ${ord.gameAccount || 'N/A'}</div>
+                            <div><strong>MK:</strong> ${ord.gamePass || 'N/A'}</div>
+                            <div><strong>2FA:</strong> ${ord.code2FA || 'Không'}</div>
+                        </div>
+                    </td>
+                    <td><span style="background:#065f46; color:#34d399; padding:4px 8px; border-radius:4px; font-weight:700; font-size:11px;">${ord.status || 'Đang xử lý'}</span></td>
+                </tr>
+            `).join('');
+        }
+
+        function renderRecentPurchases() {
+            const purchaseContainer = document.getElementById('purchaseHistoryList');
+            let orders = JSON.parse(localStorage.getItem('app_orders')) || [];
+
+            if (orders.length === 0) {
+                orders = [
+                    { username: 'tua', price: 19000, date: '10 phút trước' },
+                    { username: 'Hsh', price: 49000, date: '11 phút trước' },
+                    { username: 'lan', price: 19000, date: '12 phút trước' }
+                ];
+            } else {
+                orders = [...orders].reverse().slice(0, 6);
+            }
+
+            purchaseContainer.innerHTML = orders.map(ord => {
+                const uName = maskUsername(ord.username || ord.user || 'thanhvien');
+                const pAmount = Number(ord.price || ord.amount || 0).toLocaleString('vi-VN');
+                const timeStr = ord.date || 'Vừa xong';
+
+                return `
+                    <div class="history-item">
+                        <div>
+                            <div><span class="history-user">${uName}</span><span class="history-action">mua</span></div>
+                            <div class="history-time">${timeStr}</div>
+                        </div>
+                        <div class="amount-purple">-${pAmount}đ</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        document.addEventListener('DOMContentLoaded', initShop);
+    </script>
+</body>
+</html>
